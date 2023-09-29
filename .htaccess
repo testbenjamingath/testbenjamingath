@@ -1,11 +1,9 @@
-# Redirect "/page.html" to "/page" (only if "/pages.html" exists)
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{THE_REQUEST} /(.+)\.html [NC]
-RewriteRule ^(.+)\.html$ /$1 [NC,R=301,L]
+#example.com/page will display the contents of example.com/page.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L,QSA]
 
-# redirect "/index" to "/"
-RewriteRule ^index$ / [NC,R=301,L]
-
-# Load "/page.html" when requesting "/page" (only if "/pages.html" exists)
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
-RewriteRule ^ /%{REQUEST_URI}.html [QSA,L]
+#301 from example.com/page.html to example.com/page
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*\.html\ HTTP/
+RewriteRule ^(.*)\.html$ /$1 [R=301,L]
